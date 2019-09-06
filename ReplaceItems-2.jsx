@@ -1,4 +1,4 @@
- /*   Program version: Adobe Illustrator CC+  */
+ /*   Based on replaceItems.jsx by alexander-ladygin: https://github.com/alexander-ladygin/illustrator-scripts  */
 
 var scriptName = 'ReplaceItems-2',
 settingFile = {
