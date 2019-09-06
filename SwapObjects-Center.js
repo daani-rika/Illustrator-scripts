@@ -1,8 +1,5 @@
-/////////////////////////////////////////////////////////////////
-//Swap Objects 
-
-// this script swaps position and size of the two objects. 
-/////////////////////////////////////////////////////////////////
+//based on swapObjects.js by John Wundes: https://github.com/johnwun/js4ai
+//this script swaps position of the two objects, aligning centers. Size remains the same.
 
 
 try {
