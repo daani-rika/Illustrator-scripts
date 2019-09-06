@@ -1,3 +1,6 @@
+//based on ScaleToFitVerticalAxis.jsx by Janne Ojala 
+//make selected objects same width or height 
+
 #target illustrator
 
 // SAMESCALE
@@ -76,8 +79,6 @@ if(myResult == true) {
         Value = Value * 2.834645669;
     }
 
-
-
     if(SameHeight.value) {
         visitObjects(app.activeDocument.selection, scaleByHeight, Value);
     }
@@ -85,9 +86,6 @@ if(myResult == true) {
     if(SameWidth.value) {
         visitObjects(app.activeDocument.selection, scaleByWidth, Value);
     }
-
-    //if (item.height!=0 && item.width!=0){
-
 
     function scaleByWidth(item, targetWidth) {
         var factor = targetWidth / item.width;
