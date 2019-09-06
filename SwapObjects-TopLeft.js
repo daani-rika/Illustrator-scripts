@@ -1,9 +1,5 @@
-/////////////////////////////////////////////////////////////////
-//Swap Objects 
-
-// this script swaps position and size of the two objects. 
-/////////////////////////////////////////////////////////////////
-
+//based on swapObjects.js by John Wundes: https://github.com/johnwun/js4ai
+//this script swaps position of the two objects, aligning top left corner. Size remains the same.
 
 try {
     var selObjs = "Please select two objects on the page.";
@@ -20,24 +16,18 @@ try {
                 //	object A
                 var A_left = A_Bounds[0];
                 var A_top = A_Bounds[1];
-                
 
                 //	object B
                 var B_left = B_Bounds[0];
                 var B_top = B_Bounds[1];
-                
-
 
                 //move A (selection[0]) 		
-                
+
                 mySelection[0].position = [B_left, B_top];
-                
 
                 //move B (selection[1])
-                
-                mySelection[1].position = [A_left, A_top];
-                
 
+                mySelection[1].position = [A_left, A_top];
 
             }
         } else {
