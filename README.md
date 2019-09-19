@@ -16,7 +16,7 @@
 
 Чтобы запустить скрипт перейдите в меню File > Scripts.
 
-#####  Replace Items 2
+###  Replace Items 2
 <a href="Replace Items " target="_blank">На основе скрипта Replace Items Александра Ладыгина.</a>
 Скрипт заменяет выделенные объекты на объект из буфера. 
 
