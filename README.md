@@ -17,7 +17,7 @@
 Чтобы запустить скрипт перейдите в меню File > Scripts.
 
 ###  Replace Items 2
-<a href="Replace Items " target="_blank">На основе скрипта Replace Items Александра Ладыгина.</a>
+<a href="https://github.com/alexander-ladygin/illustrator-scripts" target="_blank">На основе скрипта Replace Items Александра Ладыгина.</a>
 Скрипт заменяет выделенные объекты на объект из буфера. 
 
 ![](https://drive.google.com/uc?export=view&id=10S_LmEjATyCPlZ0W0E_Z8RvjFkRF7Rrh)
