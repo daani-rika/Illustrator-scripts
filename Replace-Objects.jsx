@@ -1,6 +1,9 @@
- /*   Based on replaceItems.jsx by alexander-ladygin: https://github.com/alexander-ladygin/illustrator-scripts  */
+ /* 
+Based on Alexander Ladygin script ReplaceItems: https://github.com/alexander-ladygin/illustrator-scripts
+Modyfied by daani-rika: https://github.com/daani-rika/Illustrator-scripts 
+ */
 
-var scriptName = 'ReplaceItems-2',
+var scriptName = 'Replace-Objects.jsx',
 settingFile = {
 name: scriptName + '__setting.json',
 folder: Folder.myDocuments + '/Scripts/'
