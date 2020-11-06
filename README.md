@@ -4,7 +4,7 @@
 
 # Illustrator scripts
 
-Скрипты для Иллюстратора, которые я написала или модифицировала.
+Скрипты для Иллюстратора, которые я написала или модифицировала. Многие скрипты сделаны для ускорения работы с инфографикой.
 
 <a href="https://downgit.github.io/#/home?url=https://github.com/daani-rika/Illustrator-scripts">
 <img width="160" src="gifs/Ресурс 1@2x.png"></a>
