@@ -18,20 +18,24 @@
 
 ### Swap-Objects
 Набор скриптов для того, чтобы менять объекты местами. На основе скрипта Herman van Boeijen, [www.nimbling.com](http://www.nimbling.com/) — но так же работают с обтравочными масками. 
+
 ![Swap-Objects](gifs/Swap-Objects.gif)
 
 ### Format-Num.jsx
 Скрипт для округления цифр прямо в Иллюстраторе. Так же может делать простые математические операции.
+
 ![Format-Num](gifs/Format-Num.gif)
 
 ### Scale-all.jsx
 Скрипт для назначения точных размеров. Можно менять только высоту или ширину, все вместе, сохранять пропорции и нет.
+
 ![Scale-all](gifs/Scale-all.gif)
 
 ### Nobr-auto.jsx
 Режим 1: Если выделен текстовый фрейм, скрипт с помощью регулярного выражения находит 1 и 2-х буквенные слова и назначает им атрибут no-break. Regex поддерживает украинский и русский языки, не работает с английским и числами. 
 
 Режим 2: если выделен текст, применяет no-break к нему.
+
 ![Nobr-autol](gifs/Nobr-auto.gif)
 
 ### Batch-Correct-Infgrf.jsx
@@ -41,10 +45,12 @@
 
 ### Chart-GroupByLines.jsx
 Группирует выделенные элементы по строчкам. Полезно для графиков и таблиц.
+
 ![Chart-GroupByLines](gifs/Chart-GroupByLines.gif)
 
 ### Chart-Fix-Y.jsx
 Скрипт делает одинаковые расстояния между строчками.
+
 ![Chart-Fix-Y](gifs/Chart-Fix-Y.gif)
 
 <a href="https://downgit.github.io/#/home?url=https://github.com/daani-rika/Illustrator-scripts">
