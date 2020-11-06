@@ -7,7 +7,7 @@
 Скрипты для Иллюстратора, которые я написала или модифицировала.
 
 <a href="https://downgit.github.io/#/home?url=https://github.com/daani-rika/Illustrator-scripts">
-  <img width="160" height="49" src="gifs/Ресурс 1@2x.png"></a>
+<img width="160" src="gifs/Ресурс 1@2x.png"></a>
    
 ###  Replace-Objects.jsx
 На основе <a href="https://github.com/alexander-ladygin/illustrator-scripts" target="_blank">скрипта Replace Items Александра Ладыгина.</a>
@@ -48,7 +48,7 @@
 ![Chart-Fix-Y](gifs/Chart-Fix-Y.gif)
 
 <a href="https://downgit.github.io/#/home?url=https://github.com/daani-rika/Illustrator-scripts">
-  <img width="160" height="49" src="gifs/Ресурс 1@2x.png"></a>
+  <img width="160" src="gifs/Ресурс 1@2x.png"></a>
   
 ### Установка
 
