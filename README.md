@@ -1,9 +1,13 @@
+
+[![Behance](https://img.shields.io/badge/Behance-%40Daani_Rika-0055FF.svg)](https://www.behance.net/daanirika)
+[![Instagram](https://img.shields.io/badge/Instagram-%40daanirika-8034B2.svg)](https://www.instagram.com/daanirika/)
+
 # Illustrator scripts
 
 Скрипты для Иллюстратора, которые я написала или модифицировала.
 
-[![Behance](https://img.shields.io/badge/Behance-%40Daani_Rika-0055FF.svg)](https://www.behance.net/daanirika)
-[![Instagram](https://img.shields.io/badge/Instagram-%40daanirika-8034B2.svg)](https://www.instagram.com/daanirika/)
+<a href="https://downgit.github.io/#/home?url=https://github.com/daani-rika/Illustrator-scripts">
+  <img width="160" height="49" src="gifs/Ресурс 1@2x.png"></a>
    
 ###  Replace-Objects.jsx
 На основе <a href="https://github.com/alexander-ladygin/illustrator-scripts" target="_blank">скрипта Replace Items Александра Ладыгина.</a>
@@ -43,6 +47,9 @@
 Скрипт делает одинаковые расстояния между строчками.
 ![Chart-Fix-Y](gifs/Chart-Fix-Y.gif)
 
+<a href="https://downgit.github.io/#/home?url=https://github.com/daani-rika/Illustrator-scripts">
+  <img width="160" height="49" src="gifs/Ресурс 1@2x.png"></a>
+  
 ### Установка
 
 Скачайте и распакуйте архив. Поместите скрипт в папку скриптов Иллюстатора: 
