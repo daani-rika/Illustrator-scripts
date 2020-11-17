@@ -17,7 +17,7 @@
 <img src="gifs/Replace-Objects.jpg" alt="alt text" width="600">
 
 ### Swap-Objects
-Набор скриптов для того, чтобы менять объекты местами. На основе скрипта Herman van Boeijen, [www.nimbling.com](http://www.nimbling.com/) — но так же работают с обтравочными масками. 
+Набор скриптов для того, чтобы менять объекты местами. На основе скрипта Herman van Boeijen, [www.nimbling.com](http://www.nimbling.com/). 
 
 ![Swap-Objects](gifs/Swap-Objects.gif)
 
