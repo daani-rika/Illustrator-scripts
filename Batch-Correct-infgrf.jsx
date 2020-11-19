@@ -1,9 +1,8 @@
 
 /*
-Version: 2.0
-Made by daani-rika: https://github.com/daani-rika/Illustrator-scripts
-Based on batchTextEdit.jsx by shspage: https://github.com/shspage/illustrator-scripts
-*/
+Code for Import https://scriptui.joonas.me — (Triple click to select): 
+{"activeId":14,"items":{"item-0":{"id":0,"type":"Dialog","parentId":false,"style":{"enabled":true,"varName":"ChartEdit","windowType":"Dialog","creationProps":{"su1PanelCoordinates":false,"maximizeButton":false,"minimizeButton":false,"independent":false,"closeButton":true,"borderless":false,"resizeable":false},"text":"ChartEdit","preferredSize":[0,0],"margins":16,"orientation":"column","spacing":10,"alignChildren":["left","top"]}},"item-1":{"id":1,"type":"EditText","parentId":0,"style":{"enabled":true,"varName":"et","creationProps":{"noecho":false,"readonly":false,"multiline":true,"scrollable":true,"borderless":false,"enterKeySignalsOnChange":false},"softWrap":false,"text":"fdgd","justify":"left","preferredSize":[209,300],"alignment":null,"helpTip":null}},"item-3":{"id":3,"type":"RadioButton","parentId":14,"style":{"enabled":true,"varName":"BarChart","text":"Bar chart","preferredSize":[0,0],"alignment":null,"helpTip":null,"checked":true}},"item-4":{"id":4,"type":"RadioButton","parentId":14,"style":{"enabled":true,"varName":"LineWidth","text":"Line width","preferredSize":[0,0],"alignment":null,"helpTip":null,"checked":false}},"item-5":{"id":5,"type":"RadioButton","parentId":14,"style":{"enabled":true,"varName":"Area","text":"Area","preferredSize":[0,0],"alignment":null,"helpTip":null,"checked":false}},"item-6":{"id":6,"type":"Group","parentId":0,"style":{"enabled":true,"varName":null,"preferredSize":[0,0],"margins":0,"orientation":"row","spacing":10,"alignChildren":["left","center"],"alignment":null}},"item-8":{"id":8,"type":"RadioButton","parentId":15,"style":{"enabled":true,"varName":"Horizontal","text":"Top to bottom","preferredSize":[0,0],"alignment":null,"helpTip":null,"checked":true}},"item-9":{"id":9,"type":"RadioButton","parentId":15,"style":{"enabled":true,"varName":"Vertical","text":"Left to right","preferredSize":[0,0],"alignment":null,"helpTip":null,"checked":false}},"item-10":{"id":10,"type":"Checkbox","parentId":15,"style":{"enabled":true,"varName":"sortReverse","text":"Reverse order","preferredSize":[0,0],"alignment":null,"helpTip":null,"checked":false}},"item-11":{"id":11,"type":"Group","parentId":0,"style":{"enabled":true,"varName":null,"preferredSize":[200,0],"margins":0,"orientation":"row","spacing":15,"alignChildren":["center","center"],"alignment":null}},"item-12":{"id":12,"type":"Button","parentId":11,"style":{"enabled":true,"varName":"btn_ok","text":"OK","justify":"center","preferredSize":[80,0],"alignment":null,"helpTip":null}},"item-13":{"id":13,"type":"Button","parentId":11,"style":{"enabled":true,"varName":"btn_cancel","text":"Cancel","justify":"center","preferredSize":[80,0],"alignment":null,"helpTip":null}},"item-14":{"id":14,"type":"Panel","parentId":6,"style":{"enabled":true,"varName":"ChartType","creationProps":{"borderStyle":"etched","su1PanelCoordinates":false},"text":"Chart type","preferredSize":[0,0],"margins":[13,2,6,2],"orientation":"column","spacing":10,"alignChildren":["left","top"],"alignment":null}},"item-15":{"id":15,"type":"Panel","parentId":6,"style":{"enabled":true,"varName":"Sorting","creationProps":{"borderStyle":"etched","su1PanelCoordinates":false},"text":"Sort","preferredSize":[0,0],"margins":[13,2,6,2],"orientation":"column","spacing":10,"alignChildren":["left","top"],"alignment":null}}},"order":[0,1,6,14,3,4,5,15,8,9,10,11,12,13],"settings":{"importJSON":true,"indentSize":false,"cepExport":false,"includeCSSJS":true,"showDialog":true,"functionWrapper":false,"afterEffectsDockable":false,"itemReferenceList":"None"}}
+*/ 
 
 
 // - settings -------------
@@ -16,6 +15,8 @@ var return_code_alt_for_rex = return_code_alt;
 // edittext size
 var edittext_width = 200;
 var edittext_height = 300;
+
+var erorr = null;
 
 // - settings end -------------
 
@@ -70,7 +71,6 @@ var Sorting = group1.add("panel", undefined, undefined, {name: "Sorting"});
 
 var Horizontal = Sorting.add("radiobutton", undefined, undefined, {name: "Horizontal"}); 
     Horizontal.text = "Horizontal"; 
-    //Horizontal.value = true; 
 
 var Vertical = Sorting.add("radiobutton", undefined, undefined, {name: "Vertical"}); 
     Vertical.text = "Vertical"; 
@@ -147,16 +147,18 @@ var et = ChartEdit.add('edittext {properties: {name: "et", multiline: true, scro
     et.text = ""; 
     et.preferredSize.width = 209; 
     et.preferredSize.height = 200;  
+    
+
 
 // GET TEXT
 
-// get textframes in the selection
 var tfs = [],
     tfsSort = [],
     tfsOriginal = []; // textframes
 extractTextFramesAsVTextFrameItem(app.activeDocument.selection, tfs, tfsOriginal, tfsSort);
+
 if (tfs.length < 1) {
-    alert("Please select textframes");
+    erorr = "Please select textframes";
 }
 
 var PthItm = [],
@@ -169,9 +171,14 @@ sortTopToBottom(PthItm);
 sortTopToBottom(tfs);
 Horizontal.value = true; 
 
+if (PthItm.length!=tfs.length){
+    erorr = "Please, select the same number of objects and captions. There should be no groups";
+} else {
 if (tfs[0].left<PthItm[0].left){
     MoveText.value=false;
     }
+
+
 
 if (tfs[0].top>PthItm[0].top){
     sortLeftToRight(PthItm);
@@ -179,11 +186,11 @@ if (tfs[0].top>PthItm[0].top){
     Vertical.value = true;
     MoveText.value=true;
 }
-
+}
 
 
 // get the contents of tfs
-var conts = [];
+var conts = []
 
 function getConts() {
     conts = [];
@@ -199,6 +206,12 @@ getConts();
 
 et.text = conts.join("\n");
 et.active = true;
+
+var find = '\\d+(?:[,.]\\d+)?(?: \\d+(?:[,.]\\d+)?)*';
+var Numtest = et.text.match(find, 'g') ;
+    if(Numtest == null || Numtest.length != tfs.length ){
+ erorr= "Please select marks and corresponding numbers";
+    }
 
 
 // GROUP3
@@ -219,19 +232,24 @@ var btn_cancel = group3.add("button", undefined, undefined, {name: "btn_cancel"}
     btn_cancel.preferredSize.width = 80; 
 
 
+
 ///ACTION
     btn_ok.onClick = function() {
-
         var OldNumbers = [];
         var Numbers =[];
-        Numbers = et.text.split("\n"), new RegExp(return_code_alt_for_rex, "g")
 
-        if (PthItm.length!=Numbers.length){
-            alert("Please, select the same number of objects and captions");
+        Numbers = et.text.split("\n"), new RegExp(return_code_alt_for_rex, "g")
+        var Numtest2 = et.text.match(find, 'g');
+        if ( Numtest2 == null || Numtest2.length != Numbers.length || Numtest2.length != PthItm.length ){
             ChartEdit.close();
-        } else {
+            alert ("Please, enter only numbers. There should be as many numbers as paths selected");
+            
+             return;
+        }
+        
 
         for (a=0; a<app.activeDocument.selection.length / 2; a++){
+            if  (Numbers[a]){
             Numbers[a] = Numbers[a].replace(new RegExp(",", 'g'), ".");
             Numbers[a] = Numbers[a].replace(new RegExp(" ", 'g'), "");
 
@@ -239,10 +257,8 @@ var btn_cancel = group3.add("button", undefined, undefined, {name: "btn_cancel"}
             OldNumbers[a] = OldNumbers[a].replace(new RegExp(" ", 'g'), "");
         }    
 
-
-       
-
-      
+    }
+    
 
             var CoefVert = PthItm[0].height / OldNumbers[0];
             var CoefHor = PthItm[0].width / OldNumbers[0];
@@ -251,17 +267,24 @@ var btn_cancel = group3.add("button", undefined, undefined, {name: "btn_cancel"}
     
         if (BarChart.value){
 
-            if (Horizontal.value) {
+          //  if (PthItm[i].closed == true )
+            try {
+            if (Horizontal.value) {     
+            
                 for (i = 0; i < app.activeDocument.selection.length / 2; i++) {
-                    PthItm[i].width = Numbers[i] * CoefHor;
+                   
+                    PthItm[i].width = Numbers[i] * CoefHor;                    
                     if(MoveText.value){
-                        tfs[i].tf.position= [
-                           tfs[i].tf.position[0]- OldNumbers[i]* CoefHor+Numbers[i]* CoefHor,
+                        tfs[i].tf.position= [                         
+                           tfs[i].tf.position[0]- OldNumbers[i]*CoefHor + Numbers[i]*CoefHor,
                            tfs[i].tf.position[1]
                         ];   
                     }
                 
                 }
+            
+
+
             } else {
                 for (i = 0; i < app.activeDocument.selection.length / 2; i++) {
                     var Pos = PthItm[i].position[1] - PthItm[i].height + Numbers[i] * CoefVert;
@@ -276,11 +299,25 @@ var btn_cancel = group3.add("button", undefined, undefined, {name: "btn_cancel"}
                     }
                 }
             }
+            
+        } catch (e)
+        {
+            alert ("Please, select closed paths or try `Line width` option");
+        }
+        
+
+
          } else if (LineWidth.value) {
+             
+             if (PthItm[0].stroked == true ){
 
                 for (i = 0; i < app.activeDocument.selection.length / 2; i++) {
                     PthItm[i].strokeWidth = Numbers[i] * CoefLine;
                 }
+            } else {
+                alert ("Please, select lines");
+            }
+        
         } else if (Area.value) {
             for (i = 0; i < app.activeDocument.selection.length / 2; i++) {
                 PthItm[i].width = Math.sqrt(Numbers[i]) * CoefArea;
@@ -293,8 +330,12 @@ var btn_cancel = group3.add("button", undefined, undefined, {name: "btn_cancel"}
     
         ChartEdit.close()
     };
-    }
+ 
+    if (erorr != null){
+        alert (erorr);        
+ } else {       
 ChartEdit.show();
+   }   
 
 
 
