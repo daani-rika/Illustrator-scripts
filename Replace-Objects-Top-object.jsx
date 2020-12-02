@@ -1,5 +1,4 @@
  /*   Program version: Adobe Illustrator CC+  */
-
 var scriptName = 'ReplaceItems-2',
 settingFile = {
 name: scriptName + '__setting.json',
@@ -220,22 +219,12 @@ function startAction() {
 		j = 0;
 
 		progressBarCounter = progressBar.maxvalue / i;
-
-		
-			//selection = null;
-			//app.paste();
-			nodes = selection[0];
-			//selection = null;
-		
-
-		function getNode(__index) {			
-			return ( nodes );			
-		}
+		nodes = selection[0];
 
 		while (i--) {
 			if (j >= nodes.length) j = 0;
 			var item = items[i],
-			    node = getNode(undefined).duplicate(item, ElementPlacement.PLACEBEFORE);
+			node = nodes.duplicate(item, ElementPlacement.PLACEBEFORE); ;
 			j++;
 
 
@@ -282,30 +271,50 @@ function startAction() {
 				node.height = item.height-withStrk;
 			}
 
+			var left=item.left;
+			var top= item.top; 
+			var height =  item.height;
+			var width =  item.width;
 
-			node.left = item.left - (node.width - item.width) / 2;
-			node.top = item.top + (node.height - item.height) / 2;
+			if (item.typename=="GroupItem"){
+			redraw();
+			app.executeMenuCommand("OffsetPath v22"); 
+			app.executeMenuCommand("Live Pathfinder Merge"); 
+			app.executeMenuCommand("expandStyle");
+			redraw(); 
+			left=item.left;
+			top= item.top; 
+			height =  item.height;
+			width =  item.width;			
+			app.undo();
+			redraw();
+			}
+
+			node.left = left - (node.width - width) / 2;
+			node.top = top + (node.height - height) / 2;
 			
 			
 			if (AlignTopLeft.value | AlignTopRight.value | AlignTopCenter.value) {
-				node.top =  item.top+ignStrk;			}
+				node.top =  top+ignStrk;			}
+				
 
 			if (AlignCenterLeft.value | AlignCenterRight.value | AlignCenterCenter.value) {
-				node.top =  item.top + (node.height - item.height) / 2 + ignStrk+ (withStrk/2) ;	}
+				node.top =  top + (node.height - height) / 2 + ignStrk+ (withStrk/2) ;	}
 
 			if (AlignBottomLeft.value | AlignBottomRight.value | AlignBottomCenter.value) {
-				node.top =  item.top + (node.height - item.height)+ ignStrk + withStrk ;}
+				node.top =  top + (node.height - height)+ ignStrk + withStrk ;}
 
 			if (AlignTopLeft.value | AlignCenterLeft.value | AlignBottomLeft.value) {
-				node.left = item.left - ignStrk ;}
+				node.left = left - ignStrk ;}
 
 			if (AlignTopCenter.value | AlignCenterCenter.value | AlignBottomCenter.value) {
-				node.left = item.left - (node.width - item.width) / 2 - ignStrk - (withStrk/2);}
+				node.left = left - (node.width - width) / 2 - ignStrk - (withStrk/2);}
 
 			if (AlignTopRight.value | AlignCenterRight.value | AlignBottomRight.value) {
-				node.left = item.left - (node.width - item.width)- ignStrk -withStrk ;}
+				node.left = left - (node.width - width)- ignStrk -withStrk ;}
 			
-
+				
+				
 			
 			
 
@@ -322,7 +331,7 @@ if (copyColorsCheckbox.value) {
 		}
 
 		
-		//nodes.remove();
+		
 	}
 
 	dialog.close();
