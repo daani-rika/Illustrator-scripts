@@ -278,9 +278,9 @@ function startAction() {
 
 			if (item.typename=="GroupItem"){
 			redraw();
-			app.executeMenuCommand("OffsetPath v22"); 
+			//app.executeMenuCommand("OffsetPath v22"); 
 			app.executeMenuCommand("Live Pathfinder Merge"); 
-			app.executeMenuCommand("expandStyle");
+			//app.executeMenuCommand("expandStyle");
 			redraw(); 
 			left=item.left;
 			top= item.top; 
