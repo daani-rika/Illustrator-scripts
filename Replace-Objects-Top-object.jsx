@@ -223,6 +223,9 @@ function startAction() {
 
 		while (i--) {
 			if (j >= nodes.length) j = 0;
+			if (nodes.typename=="GroupItem"){
+				app.executeMenuCommand("Live Pathfinder Merge"); 
+				}
 			var item = items[i],
 			node = nodes.duplicate(item, ElementPlacement.PLACEBEFORE); ;
 			j++;
@@ -271,52 +274,65 @@ function startAction() {
 				node.height = item.height-withStrk;
 			}
 
-			var left=item.left;
-			var top= item.top; 
-			var height =  item.height;
-			var width =  item.width;
-
+			
+		
+		
 			if (item.typename=="GroupItem"){
-			redraw();
-			//app.executeMenuCommand("OffsetPath v22"); 
-			app.executeMenuCommand("Live Pathfinder Merge"); 
-			//app.executeMenuCommand("expandStyle");
-			redraw(); 
-			left=item.left;
-			top= item.top; 
-			height =  item.height;
-			width =  item.width;			
-			app.undo();
-			redraw();
-			}
+			app.executeMenuCommand("Live Pathfinder Merge"); 			
+						}
 
-			node.left = left - (node.width - width) / 2;
-			node.top = top + (node.height - height) / 2;
+			node.left = item.left - (node.width - item.width) / 2;
+			node.top = item.top + (node.height - item.height) / 2;
 			
 			
 			if (AlignTopLeft.value | AlignTopRight.value | AlignTopCenter.value) {
-				node.top =  top+ignStrk;			}
+				node.top =  item.top+ignStrk;			}
 				
 
 			if (AlignCenterLeft.value | AlignCenterRight.value | AlignCenterCenter.value) {
-				node.top =  top + (node.height - height) / 2 + ignStrk+ (withStrk/2) ;	}
+				node.top =  item.top + (node.height - item.height) / 2 + ignStrk+ (withStrk/2) ;	}
 
 			if (AlignBottomLeft.value | AlignBottomRight.value | AlignBottomCenter.value) {
-				node.top =  top + (node.height - height)+ ignStrk + withStrk ;}
+				node.top =  item.top + (node.height - item.height)+ ignStrk + withStrk ;}
 
 			if (AlignTopLeft.value | AlignCenterLeft.value | AlignBottomLeft.value) {
-				node.left = left - ignStrk ;}
+				node.left = item.left - ignStrk ;}
 
 			if (AlignTopCenter.value | AlignCenterCenter.value | AlignBottomCenter.value) {
-				node.left = left - (node.width - width) / 2 - ignStrk - (withStrk/2);}
+				node.left = item.left - (node.width - item.width) / 2 - ignStrk - (withStrk/2);}
 
 			if (AlignTopRight.value | AlignCenterRight.value | AlignBottomRight.value) {
-				node.left = left - (node.width - width)- ignStrk -withStrk ;}
+				node.left = item.left - (node.width - item.width)- ignStrk -withStrk ;}
 			
 				
-				
+		if (item.typename=="GroupItem"){
+					
+			var actionStr =   "/version 3 /name [ 9 6163746e7363727074]"
+			+ "/isOpen 1 /actionCount 1"
+			+ "/action-1 {/name [ 26 52656475636520746f20426173696320417070656172616e6365]"
+			+ "/keyIndex 0 /colorIndex 0 /isOpen 1"
+			+ "/eventCount 1"
+			+ "/event-1 {/useRulersIn1stQuadrant 0 /internalName (ai_plugin_appearance)"
+			+ "/localizedName [ 20 d09ed184d0bed180d0bcd0bbd0b5d0bdd0b8d0b5]"
+			+ "/isOpen 0 /isOn 1 /hasDialog 0 /parameterCount 1"
+			+ "/parameter-1 {"
+			+ "/key 1835363957 /showInPalette -1"
+			+ "/type (enumerated)"
+			+ "/name [ 63 d0a1d0bed0bad180d0b0d182d0b8d182d18c20d0b4d0be20d0bed181d0bdd0bed0b2d0bdd0bed0b3d0be20d0bed184d0bed180d0bcd0bbd0b5d0bdd0b8d18f]"
+			+ "/value 7}}}";
 			
-			
+			var tmp = File(Folder.desktop + "/tmpSet1.aia");  
+				tmp.open('w');  
+				tmp.write(actionStr); 
+				tmp.close();
+				app.loadAction(tmp); 
+				app.doScript("Reduce to Basic Appearance", "actnscrpt", false);  
+				app.unloadAction("actnscrpt","");
+				tmp.remove();	
+		}
+
+
+
 
 if (copyColorsCheckbox.value) {
                 try {
@@ -377,6 +393,8 @@ function loadSettings() {
 		$file.close();
 	}
 }
+
+
 
 dialog.onClose = function() {
 	saveSettings();
