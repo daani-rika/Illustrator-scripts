@@ -221,6 +221,10 @@ function startAction() {
 		progressBarCounter = progressBar.maxvalue / i;
 		nodes = selection[0];
 
+		Number.prototype.round = function(places) {
+			return +(Math.round(this + "e+" + places)  + "e-" + places);
+		  }
+
 		while (i--) {
 			var item = items[i],
 			node = nodes.duplicate(item, ElementPlacement.PLACEBEFORE); 
@@ -235,25 +239,25 @@ function startAction() {
 			var nd_strk=0;
 			var ignStrk = 0;
 			var withStrk = 0;	
-			var it_strk_start = (item.visibleBounds[1]-item.geometricBounds[1]).toFixed(2);
-        	var nd_strk_start = (node.visibleBounds[1]-node.geometricBounds[1]).toFixed(2);
+			var it_strk_start = (item.visibleBounds[1]-item.geometricBounds[1]).round(2);
+        	var nd_strk_start = (node.visibleBounds[1]-node.geometricBounds[1]).round(2);
         
 
 		
 			if (item.typename!="GroupItem"){
                 
 			// 	обводка по центру
-			if (it_strk_start==(item.strokeWidth/2).toFixed(2)){
+			if (it_strk_start==(item.strokeWidth/2).round(2)){
             it_strk=item.strokeWidth;}
             
-			if (nd_strk_start==(node.strokeWidth/2).toFixed(2)){
+			if (nd_strk_start==(node.strokeWidth/2).round(2)){
 			nd_strk=node.strokeWidth;}
 						
 			// 	обводка снаружи
-			if (it_strk_start==(item.strokeWidth).toFixed(2)){
+			if (it_strk_start==(item.strokeWidth).round(2)){
             it_strk=item.strokeWidth*2;}
             
-			if (nd_strk_start==(node.strokeWidth).toFixed(2)){
+			if (nd_strk_start==(node.strokeWidth).round(2)){
 			nd_strk=node.strokeWidth*2;}
 			
 			// 	обводка внутри
@@ -413,3 +417,5 @@ checkSettingFolder();
 loadSettings();
 dialog.center();
 dialog.show();
+
+
