@@ -222,13 +222,12 @@ function startAction() {
 		nodes = selection[0];
 
 		while (i--) {
-			if (j >= nodes.length) j = 0;
-			if (nodes.typename=="GroupItem"){
-				app.executeMenuCommand("Live Pathfinder Merge"); 
-				}
 			var item = items[i],
-			node = nodes.duplicate(item, ElementPlacement.PLACEBEFORE); ;
-			j++;
+			node = nodes.duplicate(item, ElementPlacement.PLACEBEFORE); 
+			
+			if (node.typename=="GroupItem" || item.typename=="GroupItem"){
+				app.executeMenuCommand("Live Pathfinder Merge"); 
+			}
 
 
 			////
@@ -236,32 +235,41 @@ function startAction() {
 			var nd_strk=0;
 			var ignStrk = 0;
 			var withStrk = 0;	
-			
+			var it_strk_start = (item.visibleBounds[1]-item.geometricBounds[1]).toFixed(2);
+        	var nd_strk_start = (node.visibleBounds[1]-node.geometricBounds[1]).toFixed(2);
+        
+
+		
+			if (item.typename!="GroupItem"){
+                
 			// 	обводка по центру
-			if (item.visibleBounds[1]-item.geometricBounds[1]==item.strokeWidth/2){
-			it_strk=item.strokeWidth;}
-			if (node.visibleBounds[1]-node.geometricBounds[1]==node.strokeWidth/2){
+			if (it_strk_start==(item.strokeWidth/2).toFixed(2)){
+            it_strk=item.strokeWidth;}
+            
+			if (nd_strk_start==(node.strokeWidth/2).toFixed(2)){
 			nd_strk=node.strokeWidth;}
 						
 			// 	обводка снаружи
-			if (item.visibleBounds[1]-item.geometricBounds[1]==item.strokeWidth){
-			it_strk=item.strokeWidth*2;}
-			if (node.visibleBounds[1]-node.geometricBounds[1]==node.strokeWidth){
+			if (it_strk_start==(item.strokeWidth).toFixed(2)){
+            it_strk=item.strokeWidth*2;}
+            
+			if (nd_strk_start==(node.strokeWidth).toFixed(2)){
 			nd_strk=node.strokeWidth*2;}
 			
 			// 	обводка внутри
-			if (item.visibleBounds[1]-item.geometricBounds[1]==0){
-			it_strk=0;}
-			if (node.visibleBounds[1]-node.geometricBounds[1]==0){
+			if (it_strk_start==0){
+            it_strk=0;}
+            
+			if (nd_strk_start==0){
 			nd_strk=0;}
-			
+			}
+
 			ignoreStroke.value ? ignStrk = (nd_strk-it_strk) /2 : withStrk = nd_strk-it_strk;
 			
-			
+				
 			if (fitInHeightCheckbox.value) {
 				node.width =  (item.height - withStrk)*node.width/node.height;
-				node.height = item.height - withStrk  ;
-				
+				node.height = item.height - withStrk  ;				
 			}
 
 			if (fitInWidthCheckbox.value) {
@@ -276,11 +284,6 @@ function startAction() {
 
 			
 		
-		
-			if (item.typename=="GroupItem"){
-			app.executeMenuCommand("Live Pathfinder Merge"); 			
-						}
-
 			node.left = item.left - (node.width - item.width) / 2;
 			node.top = item.top + (node.height - item.height) / 2;
 			
@@ -346,7 +349,7 @@ if (copyColorsCheckbox.value) {
 			dialog.update();
 		}
 
-		
+		nodes.remove();	
 		
 	}
 
