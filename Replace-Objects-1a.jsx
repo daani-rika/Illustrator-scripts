@@ -21,12 +21,12 @@ MainGroup.margins = 0;
 
 // FIRSTCOLUMN
 var FirstColumn = MainGroup.add("panel");
-FirstColumn.text = "Replace with object:";
+FirstColumn.text = "";
 FirstColumn.preferredSize.width = 175;
 FirstColumn.orientation = "column";
 FirstColumn.alignChildren = ["left", "top"];
-FirstColumn.spacing = 9;
-FirstColumn.margins = [10, 17, 0, 10];
+FirstColumn.spacing = 8;
+FirstColumn.margins = [10, 5, 0, 10];
 
 
 var saveOriginalCheckbox = FirstColumn.add("checkbox");
@@ -39,9 +39,20 @@ copyColorsCheckbox.text = "Copy fill color (for simple objects)";
 var ignoreStroke = FirstColumn.add("checkbox");
 ignoreStroke.text = "Ignore stroke";
 //ignoreStroke.value = true;
+try {
+if ( selection[0].typename=="GroupItem"){
+    //ignoreStroke.enabled = false; 
+    ignoreStroke.text = "Ignore stroke of the replaced objects";
+}
+}catch (e){
+    alert ("Plese, select some objects");
+}
 
 var TopObj= FirstColumn.add("checkbox");
 TopObj.text = "Replace with the top object";
+
+var ResizeStroke= FirstColumn.add("checkbox");
+ResizeStroke.text = "Resize stroke";
 
 
 // SECONDCOLUMN
@@ -64,8 +75,9 @@ var fitInHeightCheckbox = SecondColumn.add("radiobutton");
 fitInHeightCheckbox.text = "Fit height";
 //fitInHeightCheckbox.value = false;
 
-var copyWHCheckbox = SecondColumn.add("radiobutton");
-copyWHCheckbox.text = "Copy";
+var copySize= SecondColumn.add("radiobutton");
+copySize.text = "Copy";
+
 
 // THIRDCOLUMN
 var ThirdColumn = MainGroup.add("panel");
@@ -142,8 +154,8 @@ function toggleRadioButtons() {
 }
 
 // FINALBUTTONS
-var divider2 = dialog.add("panel");
-divider2.alignment = "fill";
+//var divider2 = dialog.add("panel");
+//divider2.alignment = "fill";
 
 var FinalButtons = dialog.add("group");
 FinalButtons.orientation = "row";
@@ -219,6 +231,7 @@ function startAction() {
             selection = null;
         }
 
+             
 
         ////
         while (i--) {
@@ -226,177 +239,220 @@ function startAction() {
             var item = items[i];
             var node = nodes.duplicate(item, ElementPlacement.PLACEBEFORE);
 
-            if (item.typename == "GroupItem" && item.clipped == true) {
-                item = item.pathItems[0];
-            } 
-
-            if (ignoreStroke.value == true & (item.clipping == false || item.clipped == false)) {
-                var it_top = item.geometricBounds[1];
-                var it_left = item.geometricBounds[0];
-                var it_width = item.geometricBounds[2] - item.geometricBounds[0];
-                var it_height = item.geometricBounds[1] - item.geometricBounds[3];
+            if (node.typename != "GroupItem"){  
+                var nd_s =ignoreStroke.value? 0:(node.visibleBounds[1]-node.geometricBounds[1])*2;
             } else {
-                var it_top = item.visibleBounds[1];
-                var it_left = item.visibleBounds[0];
-                var it_width = item.visibleBounds[2] - item.visibleBounds[0];
-                var it_height = item.visibleBounds[1] - item.visibleBounds[3];
+                var nd_Bounds = FindBounds(node);
+                var nd_height = nd_Bounds[1] - nd_Bounds[3];
+             var nd_width = nd_Bounds[2] - nd_Bounds[0];
+           //  var nd_height = nd_Bounds[5] - nd_Bounds[7];
+             //var nd_width = nd_Bounds[6] - nd_Bounds[4];
+            }  
+
+            ////if ignoreStroke true calculate parameters of geometric bounds
+            if (ignoreStroke.value == true){
+                if (item.typename != "GroupItem") {
+                    var it_top = item.geometricBounds[1];
+                    var it_left = item.geometricBounds[0];
+                    var it_width = item.geometricBounds[2] - item.geometricBounds[0];
+                    var it_height = item.geometricBounds[1] - item.geometricBounds[3];
+
+                } else if (item.typename == "GroupItem") {
+                    var it_Bounds = FindBounds(item);
+                    var it_top = it_Bounds[1];
+                    var it_left = it_Bounds[0];
+                    var it_width = it_Bounds[2] - it_Bounds[0];
+                    var it_height = it_Bounds[1] - it_Bounds[3];
+                }
+
+            ////if ignoreStroke  false calculate parameters of visible bounds
+            } else if (ignoreStroke.value == false) {
+                if (item.typename != "GroupItem") {
+                    var it_top = item.visibleBounds[1];
+                    var it_left = item.visibleBounds[0];
+                    var it_width = item.visibleBounds[2] - item.visibleBounds[0];
+                    var it_height = item.visibleBounds[1] - item.visibleBounds[3];
+
+                }else if (item.typename == "GroupItem"){
+                    var it_Bounds = FindBounds(item);   
+                    var it_top = it_Bounds[5];
+                    var it_left = it_Bounds[4];
+                    var it_width = it_Bounds[6] - it_Bounds[4];
+                    var it_height = it_Bounds[5] - it_Bounds[7]; 
+                }
             }
+                
 
 
             //////////////////////////
             ///change size///
 
+            var newStroke, newHeight, newWidth;
+            newStroke = newHeight = newWidth = 100;
 
-            //if node is clipping mask
-            if (node.typename == "GroupItem" && node.clipped == true) {
 
-                if (fitInHeightCheckbox.value) {
-                    if (it_height != 0) {
-                        node.width = it_height * node.pathItems[0].width / node.pathItems[0].height;
-                        node.height = it_height;
-                        node.width = node.width * (node.width / node.pathItems[0].width);
-                        node.height = node.height * (node.height / node.pathItems[0].height);
-                    } else {
-                        err = "There is an object with zero height";
+            if (fitInHeightCheckbox.value) {
+
+                //if node is vertical line      
+                if (node.width == 0) {
+                    newStroke = newHeight = it_height * 100 / node.height;
+                    newWidth = 100;
+
+                    //if node is horisontal line      
+                } else if (node.height == 0) {
+                    newStroke = it_height * 100 / node.strokeWidth;
+                    newHeight = newWidth = 100;
+
+                    //if node isnot a group
+                } else if (it_height != 0) {
+                    if (node.typename != "GroupItem") {
+                        newWidth = newHeight = newStroke = ResizeStroke.value
+                        ? (it_height / (node.height + nd_s)) * 100
+                        : ((it_height - nd_s) / node.height) * 100;
+
+                    //if node is a group
+                    } else if (node.typename == "GroupItem") {
+                        newWidth = newHeight = newStroke = it_height / nd_height * 100;
                     }
+                } else {
+                    err = "There is an object with zero height";
                 }
 
-                if (fitInWidthCheckbox.value) {
-                    if (it_width != 0) {
-                        node.height = node.pathItems[0].height * it_width / node.pathItems[0].width;
-                        node.width = it_width;
-                        node.height = node.height * (node.height / node.pathItems[0].height);
-                        node.width = node.width * (node.width / node.pathItems[0].width);
-                    } else {
-                        err = "There is an object with zero width";
+
+            } else if (fitInWidthCheckbox.value) {
+
+                //if node is vertical line      
+                if (node.width == 0) {
+                    newStroke = it_width * 100 / node.strokeWidth;
+                    newHeight = 100;
+
+                    //if node is horisontal line      
+                } else if (node.height == 0) {
+                    newStroke = newWidth = it_width * 100 / node.width;
+                    newHeight = 100;
+
+                    //if node is not a group
+                } else if (it_width != 0) {
+                    if (node.typename != "GroupItem" & node.height != 0 & node.width != 0) {
+                        newWidth = newHeight = newStroke = ResizeStroke.value
+                        ? (it_width / (node.width + nd_s)) * 100
+                        : ((it_width - nd_s) / node.width) * 100;
+
+                    //if node is a group
+                    } else if (node.typename == "GroupItem") {
+                        newWidth = newHeight = newStroke = it_width / nd_width * 100;
                     }
+                } else {
+                    err = "There is an object with zero width";
                 }
 
-                if (copyWHCheckbox.value) {
-                    if (it_width != 0 & it_height != 0) {
-                        node.width = it_width;
-                        node.height = it_height;
-                        node.height = node.height * (node.height / node.pathItems[0].height);
-                        node.width = node.width * (node.width / node.pathItems[0].width);
-                    } else {
-                        err = "There is an object with zero width or height";
+
+            } else if (copySize.value) {
+
+                //if node is vertical line  
+                if (node.width == 0) {
+                    newWidth = 100;
+                    newHeight = it_height * 100 / node.height;
+                    newStroke = it_width * 100 / node.strokeWidth;
+
+                    //if node is horisontal line      
+                } else if (node.height == 0) {
+                    newWidth = it_width * 100 / node.width;
+                    newHeight = 100;
+                    newStroke = it_height * 100 / node.strokeWidth;
+
+                } else if (it_width != 0 | it_height != 0) {
+                    //if node is not a group
+                    if (node.typename != "GroupItem") {
+                        newWidth = ((it_width - nd_s) / node.width) * 100;
+                        newHeight = ((it_height - nd_s) / node.height) * 100;
+                        newStroke = 100;
+
+                        //if node is a group
+                    } else if (node.typename == "GroupItem") {
+                        newHeight = it_height / nd_height * 100;
+                        newWidth = it_width / nd_width * 100;
+                        newStroke = undefined; /// ?    
                     }
+                } else {
+                    err = "There is an object with zero width or height";
                 }
+            }
 
-            //if node is vertical line      
-            } else if (node.width == 0) {
 
-                if (fitInHeightCheckbox.value) {
-                    if (it_height != 0) {
-                        node.height = it_height;
-                    } else {
-                        err = "There is an object with zero height";
-                    }
-                }
+            node.resize(
+                scaleX=newWidth,
+                scaleY= newHeight,
+                changePositions= undefined,
+                changeFillPatterns= undefined,
+                changeFillGradients= undefined,
+                changeStrokePattern= undefined,
+                changeLineWidths =  ResizeStroke.value ? newStroke : 100);
 
-                if (fitInWidthCheckbox.value) {
-                    err = "Script does not change the stroke width.";
-                }
+            // end changing size
 
-                if (copyWHCheckbox.value) {
-                    if (it_height != 0) {
-                        node.height = it_height;
-                    } else {
-                        err = "There is an object with zero width or height";
-                    }
-                }
-
-            //if node is horisontal line      
-            } else if (node.height == 0) {
-                if (fitInHeightCheckbox.value) {
-                    err = "Script does not change the stroke width.";
-                }
-
-                if (fitInWidthCheckbox.value) {
-                    if (it_width != 0) {
-                        node.width = it_width;
-                    } else {
-                        err = "There is an object with zero height";
-                    }
-                }
-
-                if (copyWHCheckbox.value) {
-                    if (it_width != 0) {
-                        node.width = it_width;
-                    } else {
-                        err = "There is an object with zero width or height";
-                    }
-                }
-
-            /////
-            } else {
-
-                if (fitInHeightCheckbox.value) {
-                    if (it_height != 0) {
-                        node.width = (it_height) * node.width / node.height;
-                        node.height = it_height;
-                    } else {
-                        err = "There is an object with zero height";
-                    }
-                }
-
-                if (fitInWidthCheckbox.value) {
-                    if (it_width != 0) {
-                        node.height = node.height * it_width / node.width
-                        node.width = it_width;
-                    } else {
-                        err = "There is an object with zero width";
-                    }
-                }
-
-                if (copyWHCheckbox.value) {
-                    if (it_width != 0 | it_height != 0) {
-                        node.width = it_width;
-                        node.height = it_height;
-                    } else {
-                        err = "There is an object with zero width or height";
-                    }
-                }
-            } // end changing size
 
             /// calculate node parametres
-            if (ignoreStroke.value == true & (node.clipping == false || node.clipped == false)) {
-                var nd_str = node.visibleBounds[1] - node.geometricBounds[1];
-                var nd_width = node.geometricBounds[2] - node.geometricBounds[0];
-                var nd_height = node.geometricBounds[1] - node.geometricBounds[3];
-            } else {
+            if (node.typename == "GroupItem") {
+                var nd_Bounds = FindBounds(node);
+                var nd_top = nd_Bounds[1];
+                var nd_left = nd_Bounds[0];
+                var nd_width = nd_Bounds[2] - nd_Bounds[0];
+                var nd_height = nd_Bounds[1] - nd_Bounds[3];
                 var nd_str = 0;
-                var nd_width = node.visibleBounds[2] - node.visibleBounds[0];
-                var nd_height = node.visibleBounds[1] - node.visibleBounds[3];
+
+            } else if (node.typename != "GroupItem") {
+
+                if (ignoreStroke.value == true) {
+                    var nd_str = node.visibleBounds[1] - node.geometricBounds[1];
+                    var nd_width = node.geometricBounds[2] - node.geometricBounds[0];
+                    var nd_height = node.geometricBounds[1] - node.geometricBounds[3];
+                    var nd_top = node.geometricBounds[1];
+                    var nd_left = node.geometricBounds[0];
+
+                    if (node.height == 0 || node.width == 0) {
+                        nd_str = 0;
+                        nd_height = node.visibleBounds[1] - node.visibleBounds[3];
+                        nd_width = node.visibleBounds[2] - node.visibleBounds[0];
+                    }
+
+                } else if (ignoreStroke.value == false) {
+                    var nd_str = 0;
+                    var nd_width = node.visibleBounds[2] - node.visibleBounds[0];
+                    var nd_height = node.visibleBounds[1] - node.visibleBounds[3];
+                    var nd_top = node.visibleBounds[1];
+                    var nd_left = node.visibleBounds[0];
+                }
             }
 
 
             //////////////////////////
             ///change position///
 
+
             //if node is clipping mask
-            if (node.typename == "GroupItem" && node.clipped == true) {
+            if (node.typename == "GroupItem"){
 
                 ///TOP
                 if (AlignTopLeft.value | AlignTopRight.value | AlignTopCenter.value) {
-                    node.top = node.top - (node.pathItems[0].top - it_top) + nd_str;
+                    node.top = node.top - (nd_top - it_top) + nd_str;
                 }
                 if (AlignCenterLeft.value | AlignCenterRight.value | AlignCenterCenter.value) {
-                    node.top = node.top - ((node.pathItems[0].top - node.pathItems[0].height / 2) - (it_top - it_height / 2)) + nd_str;
+                    node.top = node.top - ((nd_top - nd_height / 2) - (it_top - it_height / 2)) + nd_str;
                 }
                 if (AlignBottomLeft.value | AlignBottomRight.value | AlignBottomCenter.value) {
-                    node.top = node.top - ((node.pathItems[0].top - node.pathItems[0].height) - (it_top - it_height)) + nd_str;
+                    node.top = node.top - ((nd_top - nd_height) - (it_top - it_height)) + nd_str;
                 }
 
                 ///LEFT
                 if (AlignTopLeft.value | AlignCenterLeft.value | AlignBottomLeft.value) {
-                    node.left = node.left - (node.pathItems[0].left - it_left) - nd_str;
+                    node.left = node.left - (nd_left - it_left) - nd_str;
                 }
                 if (AlignTopCenter.value | AlignCenterCenter.value | AlignBottomCenter.value) {
-                    node.left = node.left + ((it_left + it_width / 2) - (node.pathItems[0].left + node.pathItems[0].width / 2)) - nd_str;
+                    node.left = node.left + ((it_left + it_width / 2) - (nd_left + nd_width / 2)) - nd_str;
                 }
                 if (AlignTopRight.value | AlignCenterRight.value | AlignBottomRight.value) {
-                    node.left = node.left + ((it_left + it_width) - (node.pathItems[0].left + node.pathItems[0].width)) - nd_str;
+                    node.left = node.left + ((it_left + it_width) - (nd_left + nd_width)) - nd_str;
                 }
 
             ///   
@@ -476,6 +532,92 @@ function startAction() {
 
 
 ///////////////////////
+/* //////////////////////////////Get object size-support mask function/////////////////////////////////// */
+function FindBounds(obj) {
+    var Bounds = new Array();
+    GET_Bounds(obj);
+    var v_left = new Array();
+    var g_left = new Array();
+    var v_top = new Array();
+    var g_top = new Array();
+    var v_right = new Array();
+    var g_right = new Array();
+    var v_bottom = new Array();
+    var g_bottom = new Array();
+    for (var i = 0; i < Bounds.length; i += 1) {
+        g_left[i] = Bounds[i].geometricBounds[0];
+        v_left[i] = Bounds[i].visibleBounds[0];
+        g_top[i] = Bounds[i].geometricBounds[1];
+        v_top[i] = Bounds[i].visibleBounds[1];
+        g_right[i] = Bounds[i].geometricBounds[2];
+        v_right[i] = Bounds[i].visibleBounds[2];
+        g_bottom[i] = Bounds[i].geometricBounds[3];
+        v_bottom[i] = Bounds[i].visibleBounds[3];
+    }
+    var v_L = MIN_IN_ARRAY(v_left);
+    var g_L = MIN_IN_ARRAY(g_left);
+    var v_T = MAX_IN_ARRAY(v_top);
+    var g_T = MAX_IN_ARRAY(g_top);
+    var v_R = MAX_IN_ARRAY(v_right);
+    var g_R = MAX_IN_ARRAY(g_right);
+    var v_B = MIN_IN_ARRAY(v_bottom);
+    var g_B = MIN_IN_ARRAY(g_bottom);
+    return [g_L, g_T, g_R, g_B, v_L, v_T, v_R, v_B];
+
+    function GET_Bounds(obj) {
+        if (IS_CLIP(obj)) {
+            Bounds.push(obj.pageItems[0]);
+            return;
+        }
+        if (obj.constructor.name == "GroupItem") {
+            try {
+                var N_sub_obj = obj.pageItems.length;
+                for (var i = 0; i < N_sub_obj; i += 1) {
+                    GET_Bounds(obj.pageItems[i]);
+                }
+            } catch (error) {}
+            return;
+        }
+        Bounds.push(obj);
+        return;
+    }
+}
+////////////////
+function IS_CLIP(obj) {
+	try {
+		if (obj.constructor.name == "GroupItem") {
+			if (obj.clipped) {
+				return true;
+			}
+		}
+	} catch(error) {
+
+}
+	return false;
+}
+
+function MAX_IN_ARRAY(the_array) {
+	var MAX = the_array[0];
+	for (var i = 0; i < the_array.length; i += 1) {
+		if (the_array[i] > MAX) {
+			MAX = the_array[i]
+		}
+	}
+	return MAX;
+}
+
+function MIN_IN_ARRAY(the_array) {
+	var MIN = the_array[0];
+	for (var i = 0; i < the_array.length; i += 1) {
+		if (the_array[i] < MIN) {
+			MIN = the_array[i]
+		}
+	}
+	return MIN;
+}
+
+
+//////////////////////
 function saveSettings() {
     var $file = new File(settingFile.folder + settingFile.name),
         data = [
@@ -486,8 +628,9 @@ function saveSettings() {
             NochangeCheckbox.value,
             fitInWidthCheckbox.value,
             fitInHeightCheckbox.value,
-            copyWHCheckbox.value,
-            TopObj.value
+            copySize.value,
+            TopObj.value,
+            ResizeStroke.value
 
         ].toString();
 
@@ -511,8 +654,9 @@ function loadSettings() {
             NochangeCheckbox.value = ($main[3] === 'true');
             fitInWidthCheckbox.value = ($main[4] === 'true');
             fitInHeightCheckbox.value = ($main[5] === 'true');
-            copyWHCheckbox.value = ($main[6] === 'true');
+            copySize.value = ($main[6] === 'true');
             TopObj.value= ($main[7] === 'true');
+            ResizeStroke.value= ($main[8] === 'true');
 
         }
         catch (e) {}
