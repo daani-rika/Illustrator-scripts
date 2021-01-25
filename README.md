@@ -16,7 +16,7 @@ Based on <a href="https://github.com/alexander-ladygin/illustrator-scripts" targ
 Script replaces selected objects with an object from the clipboard.  
 
 ![Replace-Objects](gifs/Replace-Objects.gif)
-<img src="gifs/Replace-Objects.jpg" alt="alt text" width="600">
+<img src="gifs/Replace-Objects-en.jpg" alt="alt text" width="600">
 
 ### Swap-Objects
 A set of scripts to swap objects in places. Based on the script by Herman van Boeijen, [www.nimbling.com](http://www.nimbling.com/). 
