@@ -55,6 +55,17 @@
 
 ![Chart-Fix-Y](gifs/Chart-Fix-Y.gif)
 
+### Save-pdf.jsx
+Скрипт без интерфейса, сохраняет все страницы в файл пдф. Для работы нужно указать в файле скрипта названия пресета для сохранения пдф.
+
+![Save-pdf](gifs/Save-pdf.gif)
+
+
+### Quick-save.jsx
+Скрипт для быстрого сохранения картинок в формате jpg и png. По умолчанию сохраняет текущий артборд. 
+
+![Quick-save](gifs/Quick-save.gif)
+
 <a href="https://downgit.github.io/#/home?url=https://github.com/daani-rika/Illustrator-scripts">
   <img width="160" src="gifs/Ресурс 1@2x.png"></a>
   
