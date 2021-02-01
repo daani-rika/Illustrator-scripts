@@ -55,11 +55,6 @@ The script sets equal spacing between the rows.
 
 ![Chart-Fix-Y](gifs/Chart-Fix-Y.gif)
 
-### Save-pdf.jsx
-Script without interface, saves all pages in pdf file. To work, you need to specify the name of the preset in the script file.
-
-![Save-pdf](gifs/Save-pdf.gif)
-
 
 ### Quick-save.jsx
 A script for quickly saving pictures in jpg and png format. By default, script saves the current artboard.
