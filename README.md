@@ -61,6 +61,11 @@ A script for quickly saving pictures in jpg and png format. By default, script s
 
 ![Quick-save](gifs/Quick-save.gif)
 
+### Color-map.js
+A script for creating heat maps: it recolors polygons according to a range of numbers. The colors should be highlighted in the swatch panel from light to dark. The new colors will be generated in rgb. Registration point of the text must be inside the polygon.
+
+![Color-map](gifs/Color-map.gif)
+
 
 <a href="https://downgit.github.io/#/home?url=https://github.com/daani-rika/Illustrator-scripts">
   <img width="160" src="gifs/Ресурс 1@2x.png"></a>
