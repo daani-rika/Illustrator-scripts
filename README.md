@@ -9,7 +9,7 @@
 Scripts for the Illustrator, which I wrote or modified. Many scripts are made to speed up infographics creations. If you know how to improve them, write me, I will be glad :)
 
 <a href="https://downgit.github.io/#/home?url=https://github.com/daani-rika/Illustrator-scripts">
-<img width="160" src="gifs/Ресурс 1@2x.png"></a>
+<img width="160" src="gifs/download-button.png"></a>
    
 ###  Replace-Objects.jsx
 Based on <a href="https://github.com/alexander-ladygin/illustrator-scripts" target="_blank">Replace Items script by Alexander Ladygin.</a>
@@ -68,7 +68,7 @@ A script for creating heat maps: it recolors polygons according to a range of nu
 
 
 <a href="https://downgit.github.io/#/home?url=https://github.com/daani-rika/Illustrator-scripts">
-  <img width="160" src="gifs/Ресурс 1@2x.png"></a>
+  <img width="160" src="gifs/download-button.png"></a>
   
 ###  Installation
 
