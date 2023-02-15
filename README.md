@@ -62,7 +62,10 @@ A script for quickly saving pictures in jpg and png format. By default, script s
 ![Quick-save](gifs/Quick-save.gif)
 
 ### Color-map.js
-A script for creating heat maps: it recolors polygons according to a range of numbers. The colors should be highlighted in the swatch panel from light to dark. The new colors will be generated in rgb. Registration point of the text must be inside the polygon.
+A script for creating heat maps: it recolors polygons according to a range of numbers. The colors should be highlighted in the swatch panel from light to dark.  Registration point of the text must be inside the polygon.
+
+Color-map-range.js
+Version that automatically generates colors based on selected swatches. The new colors will be generated in rgb.
 
 ![Color-map](gifs/Color-map.gif)
 
