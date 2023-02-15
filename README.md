@@ -2,7 +2,6 @@
 [![Behance](https://img.shields.io/badge/Behance-%40Daani_Rika-0055FF.svg)](https://www.behance.net/daanirika)
 [![Instagram](https://img.shields.io/badge/Instagram-%40daanirika-8034B2.svg)](https://www.instagram.com/daanirika/)
 
-[Readme на русском здесь!](README_RU.md)
 
 # Illustrator scripts
 
